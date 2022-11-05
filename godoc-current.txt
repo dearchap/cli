@@ -423,72 +423,7 @@ type BeforeFunc func(*Context) error
     BeforeFunc is an action to execute before any subcommands are run, but after
     the context is ready if a non-nil error is returned, no subcommands are run
 
-type BoolFlag struct {
-	Name string
-
-	Category    string
-	DefaultText string
-	FilePath    string
-	Usage       string
-
-	Required   bool
-	Hidden     bool
-	HasBeenSet bool
-
-	Value       bool
-	Destination *bool
-
-	Aliases []string
-	EnvVars []string
-
-	Count *int
-
-	Action func(*Context, bool) error
-}
-    BoolFlag is a flag with type bool
-
-func (f *BoolFlag) Apply(set *flag.FlagSet) error
-    Apply populates the flag given the flag set and environment
-
-func (f *BoolFlag) Get(ctx *Context) bool
-    Get returns the flag’s value in the given Context.
-
-func (f *BoolFlag) GetCategory() string
-    GetCategory returns the category of the flag
-
-func (f *BoolFlag) GetDefaultText() string
-    GetDefaultText returns the default text for this flag
-
-func (f *BoolFlag) GetEnvVars() []string
-    GetEnvVars returns the env vars for this flag
-
-func (f *BoolFlag) GetUsage() string
-    GetUsage returns the usage string for the flag
-
-func (f *BoolFlag) GetValue() string
-    GetValue returns the flags value as string representation and an empty
-    string if the flag takes no value at all.
-
-func (f *BoolFlag) IsRequired() bool
-    IsRequired returns whether or not the flag is required
-
-func (f *BoolFlag) IsSet() bool
-    IsSet returns whether or not the flag has been set through env or file
-
-func (f *BoolFlag) IsVisible() bool
-    IsVisible returns true if the flag is not hidden, otherwise false
-
-func (f *BoolFlag) Names() []string
-    Names returns the names of the flag
-
-func (f *BoolFlag) RunAction(c *Context) error
-    RunAction executes flag action if set
-
-func (f *BoolFlag) String() string
-    String returns a readable representation of this value (for usage defaults)
-
-func (f *BoolFlag) TakesValue() bool
-    TakesValue returns true if the flag takes a value, otherwise false
+type BoolFlag = flagImpl[bool, boolValue]
 
 type CategorizableFlag interface {
 	VisibleFlag
@@ -628,20 +563,18 @@ func (cCtx *Context) Args() Args
     Args returns the command line arguments associated with the context.
 
 func (cCtx *Context) Bool(name string) bool
-    Bool looks up the value of a local BoolFlag, returns false if not found
 
 func (cCtx *Context) Count(name string) int
     Count returns the num of occurences of this flag
 
 func (cCtx *Context) Duration(name string) time.Duration
-    Duration looks up the value of a local DurationFlag, returns 0 if not found
 
 func (cCtx *Context) FlagNames() []string
     FlagNames returns a slice of flag names used by the this context and all of
     its parent contexts.
 
 func (cCtx *Context) Float64(name string) float64
-    Float64 looks up the value of a local Float64Flag, returns 0 if not found
+    Int looks up the value of a local IntFlag, returns 0 if not found
 
 func (cCtx *Context) Float64Slice(name string) []float64
     Float64Slice looks up the value of a local Float64SliceFlag, returns nil if
@@ -687,7 +620,6 @@ func (cCtx *Context) Set(name, value string) error
     Set sets a context flag to a value.
 
 func (cCtx *Context) String(name string) string
-    String looks up the value of a local StringFlag, returns "" if not found
 
 func (cCtx *Context) StringSlice(name string) []string
     StringSlice looks up the value of a local StringSliceFlag, returns nil if
@@ -697,10 +629,10 @@ func (cCtx *Context) Timestamp(name string) *time.Time
     Timestamp gets the timestamp from a flag name
 
 func (cCtx *Context) Uint(name string) uint
-    Uint looks up the value of a local UintFlag, returns 0 if not found
+    Int looks up the value of a local IntFlag, returns 0 if not found
 
 func (cCtx *Context) Uint64(name string) uint64
-    Uint64 looks up the value of a local Uint64Flag, returns 0 if not found
+    Int64 looks up the value of a local Int64Flag, returns 0 if not found
 
 func (cCtx *Context) Uint64Slice(name string) []uint64
     Uint64Slice looks up the value of a local Uint64SliceFlag, returns nil if
@@ -749,70 +681,7 @@ type DocGenerationSliceFlag interface {
 }
     DocGenerationSliceFlag extends DocGenerationFlag for slice-based flags.
 
-type DurationFlag struct {
-	Name string
-
-	Category    string
-	DefaultText string
-	FilePath    string
-	Usage       string
-
-	Required   bool
-	Hidden     bool
-	HasBeenSet bool
-
-	Value       time.Duration
-	Destination *time.Duration
-
-	Aliases []string
-	EnvVars []string
-
-	Action func(*Context, time.Duration) error
-}
-    DurationFlag is a flag with type time.Duration
-
-func (f *DurationFlag) Apply(set *flag.FlagSet) error
-    Apply populates the flag given the flag set and environment
-
-func (f *DurationFlag) Get(ctx *Context) time.Duration
-    Get returns the flag’s value in the given Context.
-
-func (f *DurationFlag) GetCategory() string
-    GetCategory returns the category of the flag
-
-func (f *DurationFlag) GetDefaultText() string
-    GetDefaultText returns the default text for this flag
-
-func (f *DurationFlag) GetEnvVars() []string
-    GetEnvVars returns the env vars for this flag
-
-func (f *DurationFlag) GetUsage() string
-    GetUsage returns the usage string for the flag
-
-func (f *DurationFlag) GetValue() string
-    GetValue returns the flags value as string representation and an empty
-    string if the flag takes no value at all.
-
-func (f *DurationFlag) IsRequired() bool
-    IsRequired returns whether or not the flag is required
-
-func (f *DurationFlag) IsSet() bool
-    IsSet returns whether or not the flag has been set through env or file
-
-func (f *DurationFlag) IsVisible() bool
-    IsVisible returns true if the flag is not hidden, otherwise false
-
-func (f *DurationFlag) Names() []string
-    Names returns the names of the flag
-
-func (f *DurationFlag) RunAction(c *Context) error
-    RunAction executes flag action if set
-
-func (f *DurationFlag) String() string
-    String returns a readable representation of this value (for usage defaults)
-
-func (f *DurationFlag) TakesValue() bool
-    TakesValue returns true if the flag takes a value, otherwise false
+type DurationFlag = flagImpl[time.Duration, durationValue]
 
 type ErrorFormatter interface {
 	Format(s fmt.State, verb rune)
@@ -932,70 +801,7 @@ func (f FlagsByName) Less(i, j int) bool
 
 func (f FlagsByName) Swap(i, j int)
 
-type Float64Flag struct {
-	Name string
-
-	Category    string
-	DefaultText string
-	FilePath    string
-	Usage       string
-
-	Required   bool
-	Hidden     bool
-	HasBeenSet bool
-
-	Value       float64
-	Destination *float64
-
-	Aliases []string
-	EnvVars []string
-
-	Action func(*Context, float64) error
-}
-    Float64Flag is a flag with type float64
-
-func (f *Float64Flag) Apply(set *flag.FlagSet) error
-    Apply populates the flag given the flag set and environment
-
-func (f *Float64Flag) Get(ctx *Context) float64
-    Get returns the flag’s value in the given Context.
-
-func (f *Float64Flag) GetCategory() string
-    GetCategory returns the category of the flag
-
-func (f *Float64Flag) GetDefaultText() string
-    GetDefaultText returns the default text for this flag
-
-func (f *Float64Flag) GetEnvVars() []string
-    GetEnvVars returns the env vars for this flag
-
-func (f *Float64Flag) GetUsage() string
-    GetUsage returns the usage string for the flag
-
-func (f *Float64Flag) GetValue() string
-    GetValue returns the flags value as string representation and an empty
-    string if the flag takes no value at all.
-
-func (f *Float64Flag) IsRequired() bool
-    IsRequired returns whether or not the flag is required
-
-func (f *Float64Flag) IsSet() bool
-    IsSet returns whether or not the flag has been set through env or file
-
-func (f *Float64Flag) IsVisible() bool
-    IsVisible returns true if the flag is not hidden, otherwise false
-
-func (f *Float64Flag) Names() []string
-    Names returns the names of the flag
-
-func (f *Float64Flag) RunAction(c *Context) error
-    RunAction executes flag action if set
-
-func (f *Float64Flag) String() string
-    String returns a readable representation of this value (for usage defaults)
-
-func (f *Float64Flag) TakesValue() bool
-    TakesValue returns true if the flag takes a value, otherwise false
+type Float64Flag = flagImpl[float64, float64Value]
 
 type Float64Slice struct {
 	// Has unexported fields.
@@ -1162,72 +968,7 @@ func (f *GenericFlag) String() string
 func (f *GenericFlag) TakesValue() bool
     TakesValue returns true if the flag takes a value, otherwise false
 
-type Int64Flag struct {
-	Name string
-
-	Category    string
-	DefaultText string
-	FilePath    string
-	Usage       string
-
-	Required   bool
-	Hidden     bool
-	HasBeenSet bool
-
-	Value       int64
-	Destination *int64
-
-	Aliases []string
-	EnvVars []string
-
-	Base int
-
-	Action func(*Context, int64) error
-}
-    Int64Flag is a flag with type int64
-
-func (f *Int64Flag) Apply(set *flag.FlagSet) error
-    Apply populates the flag given the flag set and environment
-
-func (f *Int64Flag) Get(ctx *Context) int64
-    Get returns the flag’s value in the given Context.
-
-func (f *Int64Flag) GetCategory() string
-    GetCategory returns the category of the flag
-
-func (f *Int64Flag) GetDefaultText() string
-    GetDefaultText returns the default text for this flag
-
-func (f *Int64Flag) GetEnvVars() []string
-    GetEnvVars returns the env vars for this flag
-
-func (f *Int64Flag) GetUsage() string
-    GetUsage returns the usage string for the flag
-
-func (f *Int64Flag) GetValue() string
-    GetValue returns the flags value as string representation and an empty
-    string if the flag takes no value at all.
-
-func (f *Int64Flag) IsRequired() bool
-    IsRequired returns whether or not the flag is required
-
-func (f *Int64Flag) IsSet() bool
-    IsSet returns whether or not the flag has been set through env or file
-
-func (f *Int64Flag) IsVisible() bool
-    IsVisible returns true if the flag is not hidden, otherwise false
-
-func (f *Int64Flag) Names() []string
-    Names returns the names of the flag
-
-func (f *Int64Flag) RunAction(c *Context) error
-    RunAction executes flag action if set
-
-func (f *Int64Flag) String() string
-    String returns a readable representation of this value (for usage defaults)
-
-func (f *Int64Flag) TakesValue() bool
-    TakesValue returns true if the flag takes a value, otherwise false
+type Int64Flag = flagImpl[int64, int64Value]
 
 type Int64Slice struct {
 	// Has unexported fields.
@@ -1602,72 +1343,7 @@ type SliceFlagTarget[E any] interface {
     to propagate Value and Destination, where Value is propagated inwards
     (initially), and Destination is propagated outwards (on every update).
 
-type StringFlag struct {
-	Name string
-
-	Category    string
-	DefaultText string
-	FilePath    string
-	Usage       string
-
-	Required   bool
-	Hidden     bool
-	HasBeenSet bool
-
-	Value       string
-	Destination *string
-
-	Aliases []string
-	EnvVars []string
-
-	TakesFile bool
-
-	Action func(*Context, string) error
-}
-    StringFlag is a flag with type string
-
-func (f *StringFlag) Apply(set *flag.FlagSet) error
-    Apply populates the flag given the flag set and environment
-
-func (f *StringFlag) Get(ctx *Context) string
-    Get returns the flag’s value in the given Context.
-
-func (f *StringFlag) GetCategory() string
-    GetCategory returns the category of the flag
-
-func (f *StringFlag) GetDefaultText() string
-    GetDefaultText returns the default text for this flag
-
-func (f *StringFlag) GetEnvVars() []string
-    GetEnvVars returns the env vars for this flag
-
-func (f *StringFlag) GetUsage() string
-    GetUsage returns the usage string for the flag
-
-func (f *StringFlag) GetValue() string
-    GetValue returns the flags value as string representation and an empty
-    string if the flag takes no value at all.
-
-func (f *StringFlag) IsRequired() bool
-    IsRequired returns whether or not the flag is required
-
-func (f *StringFlag) IsSet() bool
-    IsSet returns whether or not the flag has been set through env or file
-
-func (f *StringFlag) IsVisible() bool
-    IsVisible returns true if the flag is not hidden, otherwise false
-
-func (f *StringFlag) Names() []string
-    Names returns the names of the flag
-
-func (f *StringFlag) RunAction(c *Context) error
-    RunAction executes flag action if set
-
-func (f *StringFlag) String() string
-    String returns a readable representation of this value (for usage defaults)
-
-func (f *StringFlag) TakesValue() bool
-    TakesValue returns true if the flag takes a value, otherwise false
+type StringFlag = flagImpl[string, stringValue]
 
 type StringSlice struct {
 	// Has unexported fields.
@@ -1870,72 +1546,7 @@ func (f *TimestampFlag) String() string
 func (f *TimestampFlag) TakesValue() bool
     TakesValue returns true if the flag takes a value, otherwise false
 
-type Uint64Flag struct {
-	Name string
-
-	Category    string
-	DefaultText string
-	FilePath    string
-	Usage       string
-
-	Required   bool
-	Hidden     bool
-	HasBeenSet bool
-
-	Value       uint64
-	Destination *uint64
-
-	Aliases []string
-	EnvVars []string
-
-	Base int
-
-	Action func(*Context, uint64) error
-}
-    Uint64Flag is a flag with type uint64
-
-func (f *Uint64Flag) Apply(set *flag.FlagSet) error
-    Apply populates the flag given the flag set and environment
-
-func (f *Uint64Flag) Get(ctx *Context) uint64
-    Get returns the flag’s value in the given Context.
-
-func (f *Uint64Flag) GetCategory() string
-    GetCategory returns the category of the flag
-
-func (f *Uint64Flag) GetDefaultText() string
-    GetDefaultText returns the default text for this flag
-
-func (f *Uint64Flag) GetEnvVars() []string
-    GetEnvVars returns the env vars for this flag
-
-func (f *Uint64Flag) GetUsage() string
-    GetUsage returns the usage string for the flag
-
-func (f *Uint64Flag) GetValue() string
-    GetValue returns the flags value as string representation and an empty
-    string if the flag takes no value at all.
-
-func (f *Uint64Flag) IsRequired() bool
-    IsRequired returns whether or not the flag is required
-
-func (f *Uint64Flag) IsSet() bool
-    IsSet returns whether or not the flag has been set through env or file
-
-func (f *Uint64Flag) IsVisible() bool
-    IsVisible returns true if the flag is not hidden, otherwise false
-
-func (f *Uint64Flag) Names() []string
-    Names returns the names of the flag
-
-func (f *Uint64Flag) RunAction(c *Context) error
-    RunAction executes flag action if set
-
-func (f *Uint64Flag) String() string
-    String returns a readable representation of this value (for usage defaults)
-
-func (f *Uint64Flag) TakesValue() bool
-    TakesValue returns true if the flag takes a value, otherwise false
+type Uint64Flag = flagImpl[uint64, uint64Value]
 
 type Uint64Slice struct {
 	// Has unexported fields.
@@ -2028,72 +1639,7 @@ func (f *Uint64SliceFlag) String() string
 func (f *Uint64SliceFlag) TakesValue() bool
     TakesValue returns true if the flag takes a value, otherwise false
 
-type UintFlag struct {
-	Name string
-
-	Category    string
-	DefaultText string
-	FilePath    string
-	Usage       string
-
-	Required   bool
-	Hidden     bool
-	HasBeenSet bool
-
-	Value       uint
-	Destination *uint
-
-	Aliases []string
-	EnvVars []string
-
-	Base int
-
-	Action func(*Context, uint) error
-}
-    UintFlag is a flag with type uint
-
-func (f *UintFlag) Apply(set *flag.FlagSet) error
-    Apply populates the flag given the flag set and environment
-
-func (f *UintFlag) Get(ctx *Context) uint
-    Get returns the flag’s value in the given Context.
-
-func (f *UintFlag) GetCategory() string
-    GetCategory returns the category of the flag
-
-func (f *UintFlag) GetDefaultText() string
-    GetDefaultText returns the default text for this flag
-
-func (f *UintFlag) GetEnvVars() []string
-    GetEnvVars returns the env vars for this flag
-
-func (f *UintFlag) GetUsage() string
-    GetUsage returns the usage string for the flag
-
-func (f *UintFlag) GetValue() string
-    GetValue returns the flags value as string representation and an empty
-    string if the flag takes no value at all.
-
-func (f *UintFlag) IsRequired() bool
-    IsRequired returns whether or not the flag is required
-
-func (f *UintFlag) IsSet() bool
-    IsSet returns whether or not the flag has been set through env or file
-
-func (f *UintFlag) IsVisible() bool
-    IsVisible returns true if the flag is not hidden, otherwise false
-
-func (f *UintFlag) Names() []string
-    Names returns the names of the flag
-
-func (f *UintFlag) RunAction(c *Context) error
-    RunAction executes flag action if set
-
-func (f *UintFlag) String() string
-    String returns a readable representation of this value (for usage defaults)
-
-func (f *UintFlag) TakesValue() bool
-    TakesValue returns true if the flag takes a value, otherwise false
+type UintFlag = flagImpl[uint, uintValue]
 
 type UintSlice struct {
 	// Has unexported fields.
