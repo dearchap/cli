@@ -656,6 +656,142 @@ func (f *BoolFlag) TakesValue() bool {
 	return "BoolFlag" != "BoolFlag"
 }
 
+// Float64Flag is a flag with type float64
+type Float64Flag struct {
+	Name string
+
+	Category    string
+	DefaultText string
+	FilePath    string
+	Usage       string
+
+	Required   bool
+	Hidden     bool
+	HasBeenSet bool
+
+	Value       float64
+	Destination *float64
+
+	Aliases []string
+	EnvVars []string
+
+	Action func(*Context, float64) error
+}
+
+// String returns a readable representation of this value (for usage defaults)
+func (f *Float64Flag) String() string {
+	return FlagStringer(f)
+}
+
+// IsSet returns whether or not the flag has been set through env or file
+func (f *Float64Flag) IsSet() bool {
+	return f.HasBeenSet
+}
+
+// Names returns the names of the flag
+func (f *Float64Flag) Names() []string {
+	return FlagNames(f.Name, f.Aliases)
+}
+
+// IsRequired returns whether or not the flag is required
+func (f *Float64Flag) IsRequired() bool {
+	return f.Required
+}
+
+// IsVisible returns true if the flag is not hidden, otherwise false
+func (f *Float64Flag) IsVisible() bool {
+	return !f.Hidden
+}
+
+// GetCategory returns the category of the flag
+func (f *Float64Flag) GetCategory() string {
+	return f.Category
+}
+
+// GetUsage returns the usage string for the flag
+func (f *Float64Flag) GetUsage() string {
+	return f.Usage
+}
+
+// GetEnvVars returns the env vars for this flag
+func (f *Float64Flag) GetEnvVars() []string {
+	return f.EnvVars
+}
+
+// TakesValue returns true if the flag takes a value, otherwise false
+func (f *Float64Flag) TakesValue() bool {
+	return "Float64Flag" != "BoolFlag"
+}
+
+// Int64Flag is a flag with type int64
+type Int64Flag struct {
+	Name string
+
+	Category    string
+	DefaultText string
+	FilePath    string
+	Usage       string
+
+	Required   bool
+	Hidden     bool
+	HasBeenSet bool
+
+	Value       int64
+	Destination *int64
+
+	Aliases []string
+	EnvVars []string
+
+	Base int
+
+	Action func(*Context, int64) error
+}
+
+// String returns a readable representation of this value (for usage defaults)
+func (f *Int64Flag) String() string {
+	return FlagStringer(f)
+}
+
+// IsSet returns whether or not the flag has been set through env or file
+func (f *Int64Flag) IsSet() bool {
+	return f.HasBeenSet
+}
+
+// Names returns the names of the flag
+func (f *Int64Flag) Names() []string {
+	return FlagNames(f.Name, f.Aliases)
+}
+
+// IsRequired returns whether or not the flag is required
+func (f *Int64Flag) IsRequired() bool {
+	return f.Required
+}
+
+// IsVisible returns true if the flag is not hidden, otherwise false
+func (f *Int64Flag) IsVisible() bool {
+	return !f.Hidden
+}
+
+// GetCategory returns the category of the flag
+func (f *Int64Flag) GetCategory() string {
+	return f.Category
+}
+
+// GetUsage returns the usage string for the flag
+func (f *Int64Flag) GetUsage() string {
+	return f.Usage
+}
+
+// GetEnvVars returns the env vars for this flag
+func (f *Int64Flag) GetEnvVars() []string {
+	return f.EnvVars
+}
+
+// TakesValue returns true if the flag takes a value, otherwise false
+func (f *Int64Flag) TakesValue() bool {
+	return "Int64Flag" != "BoolFlag"
+}
+
 // StringFlag is a flag with type string
 type StringFlag struct {
 	Name string
@@ -790,6 +926,144 @@ func (f *DurationFlag) GetEnvVars() []string {
 // TakesValue returns true if the flag takes a value, otherwise false
 func (f *DurationFlag) TakesValue() bool {
 	return "DurationFlag" != "BoolFlag"
+}
+
+// UintFlag is a flag with type uint
+type UintFlag struct {
+	Name string
+
+	Category    string
+	DefaultText string
+	FilePath    string
+	Usage       string
+
+	Required   bool
+	Hidden     bool
+	HasBeenSet bool
+
+	Value       uint
+	Destination *uint
+
+	Aliases []string
+	EnvVars []string
+
+	Base int
+
+	Action func(*Context, uint) error
+}
+
+// String returns a readable representation of this value (for usage defaults)
+func (f *UintFlag) String() string {
+	return FlagStringer(f)
+}
+
+// IsSet returns whether or not the flag has been set through env or file
+func (f *UintFlag) IsSet() bool {
+	return f.HasBeenSet
+}
+
+// Names returns the names of the flag
+func (f *UintFlag) Names() []string {
+	return FlagNames(f.Name, f.Aliases)
+}
+
+// IsRequired returns whether or not the flag is required
+func (f *UintFlag) IsRequired() bool {
+	return f.Required
+}
+
+// IsVisible returns true if the flag is not hidden, otherwise false
+func (f *UintFlag) IsVisible() bool {
+	return !f.Hidden
+}
+
+// GetCategory returns the category of the flag
+func (f *UintFlag) GetCategory() string {
+	return f.Category
+}
+
+// GetUsage returns the usage string for the flag
+func (f *UintFlag) GetUsage() string {
+	return f.Usage
+}
+
+// GetEnvVars returns the env vars for this flag
+func (f *UintFlag) GetEnvVars() []string {
+	return f.EnvVars
+}
+
+// TakesValue returns true if the flag takes a value, otherwise false
+func (f *UintFlag) TakesValue() bool {
+	return "UintFlag" != "BoolFlag"
+}
+
+// Uint64Flag is a flag with type uint64
+type Uint64Flag struct {
+	Name string
+
+	Category    string
+	DefaultText string
+	FilePath    string
+	Usage       string
+
+	Required   bool
+	Hidden     bool
+	HasBeenSet bool
+
+	Value       uint64
+	Destination *uint64
+
+	Aliases []string
+	EnvVars []string
+
+	Base int
+
+	Action func(*Context, uint64) error
+}
+
+// String returns a readable representation of this value (for usage defaults)
+func (f *Uint64Flag) String() string {
+	return FlagStringer(f)
+}
+
+// IsSet returns whether or not the flag has been set through env or file
+func (f *Uint64Flag) IsSet() bool {
+	return f.HasBeenSet
+}
+
+// Names returns the names of the flag
+func (f *Uint64Flag) Names() []string {
+	return FlagNames(f.Name, f.Aliases)
+}
+
+// IsRequired returns whether or not the flag is required
+func (f *Uint64Flag) IsRequired() bool {
+	return f.Required
+}
+
+// IsVisible returns true if the flag is not hidden, otherwise false
+func (f *Uint64Flag) IsVisible() bool {
+	return !f.Hidden
+}
+
+// GetCategory returns the category of the flag
+func (f *Uint64Flag) GetCategory() string {
+	return f.Category
+}
+
+// GetUsage returns the usage string for the flag
+func (f *Uint64Flag) GetUsage() string {
+	return f.Usage
+}
+
+// GetEnvVars returns the env vars for this flag
+func (f *Uint64Flag) GetEnvVars() []string {
+	return f.EnvVars
+}
+
+// TakesValue returns true if the flag takes a value, otherwise false
+func (f *Uint64Flag) TakesValue() bool {
+	return "Uint64Flag" != "BoolFlag"
 }
 
 // vim:ro
