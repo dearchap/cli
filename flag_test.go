@@ -77,7 +77,6 @@ func TestBoolFlagApply_SetsCount(t *testing.T) {
 }
 
 func TestBoolFlagCountFromContext(t *testing.T) {
-
 	boolCountTests := []struct {
 		input         []string
 		expectedVal   bool
@@ -146,7 +145,7 @@ func TestFlagsFromEnv(t *testing.T) {
 		return *s
 	}
 
-	var flagTests = []struct {
+	flagTests := []struct {
 		input     string
 		output    interface{}
 		flag      Flag
@@ -1154,8 +1153,12 @@ var int64SliceFlagTests = []struct {
 }{
 	{"heads", nil, NewInt64Slice(), "--heads value [ --heads value ]\t"},
 	{"H", nil, NewInt64Slice(), "-H value [ -H value ]\t"},
-	{"heads", []string{"H"}, NewInt64Slice(int64(2), int64(17179869184)),
-		"--heads value, -H value [ --heads value, -H value ]\t(default: 2, 17179869184)"},
+	{
+		"heads",
+		[]string{"H"},
+		NewInt64Slice(int64(2), int64(17179869184)),
+		"--heads value, -H value [ --heads value, -H value ]\t(default: 2, 17179869184)",
+	},
 }
 
 func TestInt64SliceFlagHelpOutput(t *testing.T) {
@@ -1276,6 +1279,7 @@ func TestInt64SliceFlag_SetFromParentContext(t *testing.T) {
 		t.Errorf("child context unable to view parent flag: %v != %v", expected, ctx.Int64Slice("numbers"))
 	}
 }
+
 func TestInt64SliceFlag_ReturnNil(t *testing.T) {
 	fl := &Int64SliceFlag{}
 	set := flag.NewFlagSet("test", 0)
@@ -1308,8 +1312,12 @@ var uintSliceFlagTests = []struct {
 }{
 	{"heads", nil, NewUintSlice(), "--heads value [ --heads value ]\t"},
 	{"H", nil, NewUintSlice(), "-H value [ -H value ]\t"},
-	{"heads", []string{"H"}, NewUintSlice(uint(2), uint(17179869184)),
-		"--heads value, -H value [ --heads value, -H value ]\t(default: 2, 17179869184)"},
+	{
+		"heads",
+		[]string{"H"},
+		NewUintSlice(uint(2), uint(17179869184)),
+		"--heads value, -H value [ --heads value, -H value ]\t(default: 2, 17179869184)",
+	},
 }
 
 func TestUintSliceFlagHelpOutput(t *testing.T) {
@@ -1430,6 +1438,7 @@ func TestUintSliceFlag_SetFromParentContext(t *testing.T) {
 		t.Errorf("child context unable to view parent flag: %v != %v", expected, ctx.UintSlice("numbers"))
 	}
 }
+
 func TestUintSliceFlag_ReturnNil(t *testing.T) {
 	fl := &UintSliceFlag{}
 	set := flag.NewFlagSet("test", 0)
@@ -1454,8 +1463,12 @@ var uint64SliceFlagTests = []struct {
 }{
 	{"heads", nil, NewUint64Slice(), "--heads value [ --heads value ]\t"},
 	{"H", nil, NewUint64Slice(), "-H value [ -H value ]\t"},
-	{"heads", []string{"H"}, NewUint64Slice(uint64(2), uint64(17179869184)),
-		"--heads value, -H value [ --heads value, -H value ]\t(default: 2, 17179869184)"},
+	{
+		"heads",
+		[]string{"H"},
+		NewUint64Slice(uint64(2), uint64(17179869184)),
+		"--heads value, -H value [ --heads value, -H value ]\t(default: 2, 17179869184)",
+	},
 }
 
 func TestUint64SliceFlagHelpOutput(t *testing.T) {
@@ -1576,6 +1589,7 @@ func TestUint64SliceFlag_SetFromParentContext(t *testing.T) {
 		t.Errorf("child context unable to view parent flag: %v != %v", expected, ctx.Uint64Slice("numbers"))
 	}
 }
+
 func TestUint64SliceFlag_ReturnNil(t *testing.T) {
 	fl := &Uint64SliceFlag{}
 	set := flag.NewFlagSet("test", 0)
@@ -1657,8 +1671,12 @@ var float64SliceFlagTests = []struct {
 }{
 	{"heads", nil, NewFloat64Slice(), "--heads value [ --heads value ]\t"},
 	{"H", nil, NewFloat64Slice(), "-H value [ -H value ]\t"},
-	{"heads", []string{"H"}, NewFloat64Slice(0.1234, -10.5),
-		"--heads value, -H value [ --heads value, -H value ]\t(default: 0.1234, -10.5)"},
+	{
+		"heads",
+		[]string{"H"},
+		NewFloat64Slice(0.1234, -10.5),
+		"--heads value, -H value [ --heads value, -H value ]\t(default: 0.1234, -10.5)",
+	},
 }
 
 func TestFloat64SliceFlagHelpOutput(t *testing.T) {
@@ -2637,7 +2655,7 @@ func TestParseMultiBoolFromEnvCascade(t *testing.T) {
 }
 
 func TestParseBoolFromEnv(t *testing.T) {
-	var boolFlagTests = []struct {
+	boolFlagTests := []struct {
 		input  string
 		output bool
 	}{
@@ -2750,7 +2768,6 @@ func TestParseDestinationGeneric(t *testing.T) {
 			},
 		},
 		Action: func(ctx *Context) error {
-
 			if !reflect.DeepEqual(dest, expectedGeneric) {
 				t.Errorf(
 					"expected destination generic: %+v, actual: %+v",
@@ -2834,7 +2851,7 @@ func TestFlagFromFile(t *testing.T) {
 		_ = os.Remove(temp.Name())
 	}()
 
-	var filePathTests = []struct {
+	filePathTests := []struct {
 		path     string
 		name     []string
 		expected string
@@ -3109,37 +3126,32 @@ type flagValueTestCase struct {
 
 func TestFlagValue(t *testing.T) {
 	cases := []*flagValueTestCase{
-		&flagValueTestCase{
+		{
 			name:    "stringSlice",
 			flag:    &StringSliceFlag{Name: "flag", Value: NewStringSlice("default1", "default2")},
 			toParse: []string{"--flag", "parsed,parsed2", "--flag", "parsed3,parsed4"},
 			expect:  `[parsed parsed2 parsed3 parsed4]`,
-		},
-		&flagValueTestCase{
+		}, {
 			name:    "float64Slice",
 			flag:    &Float64SliceFlag{Name: "flag", Value: NewFloat64Slice(1.1, 2.2)},
 			toParse: []string{"--flag", "13.3,14.4", "--flag", "15.5,16.6"},
 			expect:  `[]float64{13.3, 14.4, 15.5, 16.6}`,
-		},
-		&flagValueTestCase{
+		}, {
 			name:    "int64Slice",
 			flag:    &Int64SliceFlag{Name: "flag", Value: NewInt64Slice(1, 2)},
 			toParse: []string{"--flag", "13,14", "--flag", "15,16"},
 			expect:  `[]int64{13, 14, 15, 16}`,
-		},
-		&flagValueTestCase{
+		}, {
 			name:    "intSlice",
 			flag:    &IntSliceFlag{Name: "flag", Value: NewIntSlice(1, 2)},
 			toParse: []string{"--flag", "13,14", "--flag", "15,16"},
 			expect:  `[]int{13, 14, 15, 16}`,
-		},
-		&flagValueTestCase{
+		}, {
 			name:    "uint64Slice",
 			flag:    &Uint64SliceFlag{Name: "flag", Value: NewUint64Slice(1, 2)},
 			toParse: []string{"--flag", "13,14", "--flag", "15,16"},
 			expect:  `[]uint64{13, 14, 15, 16}`,
-		},
-		&flagValueTestCase{
+		}, {
 			name:    "uintSlice",
 			flag:    &UintSliceFlag{Name: "flag", Value: NewUintSlice(1, 2)},
 			toParse: []string{"--flag", "13,14", "--flag", "15,16"},
