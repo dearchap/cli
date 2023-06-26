@@ -4,6 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"log"
 	"strings"
 )
 
@@ -155,6 +156,10 @@ func (cCtx *Context) Value(name string) interface{} {
 	if f := cCtx.lookupFlag(name); f != nil {
 		if g, ok := f.(ValueGetter); ok {
 			return g.GetFlagValue().Get()
+		}
+		if g, ok := f.(flag.Getter); ok {
+			log.Printf("%v", g.Get())
+			return g.Get()
 		}
 	}
 	return nil
