@@ -13,10 +13,6 @@ type Value interface {
 	flag.Getter
 }
 
-type ValueGetter interface {
-	GetFlagValue() Value
-}
-
 type boolFlag interface {
 	IsBoolFlag() bool
 }
@@ -25,6 +21,7 @@ type fnValue struct {
 	fn     func(string) error
 	isBool bool
 	v      Value
+	count  *int
 }
 
 func (f fnValue) Get() any           { return f.v.Get() }
@@ -45,6 +42,7 @@ func (f fnValue) Serialize() string {
 
 func (f fnValue) IsBoolFlag() bool    { return f.isBool }
 func (f fnValue) GetFlagValue() Value { return f.v }
+func (f fnValue) Count() int          { return *f.count }
 
 // ValueCreator is responsible for creating a flag.Value emulation
 // as well as custom formatting
@@ -91,6 +89,8 @@ type FlagBase[T any, C any, VC ValueCreator[T, C]] struct {
 	Config C // Additional/Custom configuration associated with this flag type
 
 	OnlyOnce bool // whether this flag can be duplicated on the command line
+
+	Validator func(T) error // custom function to validate this flag value
 
 	// unexported fields for internal use
 	count      int   // number of times the flag has been set
@@ -168,10 +168,17 @@ func (f *FlagBase[T, C, V]) Apply(set *flag.FlagSet) error {
 					return fmt.Errorf("cant duplicate this flag")
 				}
 				f.count++
-				return f.value.Set(val)
+				if err := f.value.Set(val); err != nil {
+					return err
+				}
+				if f.Validator != nil {
+					return f.Validator(f.value.Get().(T))
+				}
+				return nil
 			},
 			isBool: isBool,
 			v:      f.value,
+			count:  &f.count,
 		}, name, f.Usage)
 	}
 
