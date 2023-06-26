@@ -27,6 +27,7 @@ type fnValue struct {
 	v      Value
 }
 
+func (f fnValue) Get() any           { return f.v.Get() }
 func (f fnValue) Set(s string) error { return f.fn(s) }
 func (f fnValue) String() string     { return f.v.String() }
 func (f fnValue) Serialize() string {
