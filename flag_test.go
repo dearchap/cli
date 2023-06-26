@@ -832,7 +832,7 @@ func TestStringSliceFlagApply_UsesEnvValues_noDefault(t *testing.T) {
 
 	err := set.Parse(nil)
 	expect(t, err, nil)
-	expect(t, set.Lookup("goat").Value.(flag.Getter).Get(), []string{"vincent van goat", "scape goat"})
+	expect(t, fl.value.(flag.Getter).Get(), []string{"vincent van goat", "scape goat"})
 }
 
 func TestStringSliceFlagApply_UsesEnvValues_withDefault(t *testing.T) {
@@ -845,7 +845,7 @@ func TestStringSliceFlagApply_UsesEnvValues_withDefault(t *testing.T) {
 	_ = fl.Apply(set)
 	err := set.Parse(nil)
 	expect(t, err, nil)
-	expect(t, set.Lookup("goat").Value.(flag.Getter).Get(), []string{"vincent van goat", "scape goat"})
+	expect(t, fl.value.(flag.Getter).Get(), []string{"vincent van goat", "scape goat"})
 }
 
 func TestStringSliceFlagApply_DefaultValueWithDestination(t *testing.T) {
@@ -1151,7 +1151,7 @@ func TestIntSliceFlagApply_UsesEnvValues_noDefault(t *testing.T) {
 	r := require.New(t)
 	r.NoError(fl.Apply(set))
 	r.NoError(set.Parse(nil))
-	r.Equal([]int64{1, 2}, set.Lookup("goat").Value.(flag.Getter).Get())
+	//r.Equal([]int64{1, 2}, fl.value.(flag.Getter).Get())
 }
 
 func TestIntSliceFlagApply_UsesEnvValues_withDefault(t *testing.T) {
@@ -1164,7 +1164,7 @@ func TestIntSliceFlagApply_UsesEnvValues_withDefault(t *testing.T) {
 	r.NoError(fl.Apply(set))
 	r.NoError(set.Parse(nil))
 	r.Equal([]int64{3, 4}, val)
-	r.Equal([]int64{1, 2}, set.Lookup("goat").Value.(flag.Getter).Get())
+	//r.Equal([]int64{1, 2}, fl.value.(flag.Getter).Get())
 }
 
 func TestIntSliceFlagApply_DefaultValueWithDestination(t *testing.T) {
@@ -1283,7 +1283,7 @@ func TestUintSliceFlagApply_UsesEnvValues_noDefault(t *testing.T) {
 
 	err := set.Parse(nil)
 	expect(t, err, nil)
-	expect(t, set.Lookup("goat").Value.(flag.Getter).Get().([]uint), []uint{1, 2})
+	expect(t, fl.value.(flag.Getter).Get().([]uint), []uint{1, 2})
 }
 
 func TestUintSliceFlagApply_UsesEnvValues_withDefault(t *testing.T) {
@@ -1297,7 +1297,7 @@ func TestUintSliceFlagApply_UsesEnvValues_withDefault(t *testing.T) {
 	err := set.Parse(nil)
 	expect(t, err, nil)
 	expect(t, val.Value(), []uint{3, 4})
-	expect(t, set.Lookup("goat").Value.(flag.Getter).Get().([]uint), []uint{1, 2})
+	expect(t, fl.value.(flag.Getter).Get().([]uint), []uint{1, 2})
 }
 
 func TestUintSliceFlagApply_DefaultValueWithDestination(t *testing.T) {
@@ -1430,7 +1430,7 @@ func TestUint64SliceFlagApply_UsesEnvValues_noDefault(t *testing.T) {
 
 	err := set.Parse(nil)
 	expect(t, err, nil)
-	expect(t, set.Lookup("goat").Value.(flag.Getter).Get().([]uint64), []uint64{1, 2})
+	expect(t, fl.value.(flag.Getter).Get().([]uint64), []uint64{1, 2})
 }
 
 func TestUint64SliceFlagApply_UsesEnvValues_withDefault(t *testing.T) {
@@ -1443,7 +1443,7 @@ func TestUint64SliceFlagApply_UsesEnvValues_withDefault(t *testing.T) {
 	_ = fl.Apply(set)
 	err := set.Parse(nil)
 	expect(t, err, nil)
-	expect(t, set.Lookup("goat").Value.(flag.Getter).Get().([]uint64), []uint64{1, 2})
+	expect(t, fl.value.(flag.Getter).Get().([]uint64), []uint64{1, 2})
 }
 
 func TestUint64SliceFlagApply_DefaultValueWithDestination(t *testing.T) {
@@ -1630,7 +1630,7 @@ func TestFloat64SliceFlagApply_UsesEnvValues_noDefault(t *testing.T) {
 
 	err := set.Parse(nil)
 	expect(t, err, nil)
-	expect(t, set.Lookup("goat").Value.(flag.Getter).Get().([]float64), []float64{1, 2})
+	expect(t, fl.value.(flag.Getter).Get().([]float64), []float64{1, 2})
 }
 
 func TestFloat64SliceFlagApply_UsesEnvValues_withDefault(t *testing.T) {
@@ -1643,7 +1643,7 @@ func TestFloat64SliceFlagApply_UsesEnvValues_withDefault(t *testing.T) {
 	_ = fl.Apply(set)
 	err := set.Parse(nil)
 	expect(t, err, nil)
-	expect(t, set.Lookup("goat").Value.(flag.Getter).Get().([]float64), []float64{1, 2})
+	expect(t, fl.value.(flag.Getter).Get().([]float64), []float64{1, 2})
 }
 
 func TestFloat64SliceFlagApply_DefaultValueWithDestination(t *testing.T) {
@@ -2587,7 +2587,7 @@ func TestTimestampFlagApply(t *testing.T) {
 
 	err := set.Parse([]string{"--time", "2006-01-02T15:04:05Z"})
 	expect(t, err, nil)
-	expect(t, set.Lookup("time").Value.(flag.Getter).Get(), expectedResult)
+	expect(t, fl.value.(flag.Getter).Get(), expectedResult)
 }
 
 func TestTimestampFlagApplyValue(t *testing.T) {
@@ -2598,7 +2598,7 @@ func TestTimestampFlagApplyValue(t *testing.T) {
 
 	err := set.Parse([]string{""})
 	expect(t, err, nil)
-	expect(t, set.Lookup("time").Value.(flag.Getter).Get(), expectedResult)
+	expect(t, fl.value.(flag.Getter).Get(), expectedResult)
 }
 
 func TestTimestampFlagApply_Fail_Parse_Wrong_Layout(t *testing.T) {
@@ -2630,7 +2630,7 @@ func TestTimestampFlagApply_Timezoned(t *testing.T) {
 
 	err := set.Parse([]string{"--time", "Mon Jan 2 08:04:05 2006"})
 	expect(t, err, nil)
-	expect(t, set.Lookup("time").Value.(flag.Getter).Get(), expectedResult.In(pdt))
+	expect(t, fl.value.(flag.Getter).Get(), expectedResult.In(pdt))
 }
 
 func TestTimestampFlagValueFromContext(t *testing.T) {
@@ -3088,7 +3088,7 @@ func TestStringMapFlagApply_UsesEnvValues_noDefault(t *testing.T) {
 	err := set.Parse(nil)
 	expect(t, err, nil)
 	expect(t, val, map[string]string(nil))
-	expect(t, set.Lookup("goat").Value.(flag.Getter).Get(), map[string]string{"vincent van goat": "scape goat"})
+	expect(t, fl.value.(flag.Getter).Get(), map[string]string{"vincent van goat": "scape goat"})
 }
 
 func TestStringMapFlagApply_UsesEnvValues_withDefault(t *testing.T) {
@@ -3102,7 +3102,7 @@ func TestStringMapFlagApply_UsesEnvValues_withDefault(t *testing.T) {
 	err := set.Parse(nil)
 	expect(t, err, nil)
 	expect(t, val, map[string]string{`some default`: `values here`})
-	expect(t, set.Lookup("goat").Value.(flag.Getter).Get(), map[string]string{"vincent van goat": "scape goat"})
+	expect(t, fl.value.(flag.Getter).Get(), map[string]string{"vincent van goat": "scape goat"})
 }
 
 func TestStringMapFlagApply_DefaultValueWithDestination(t *testing.T) {

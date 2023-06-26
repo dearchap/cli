@@ -801,6 +801,10 @@ func (f *FlagBase[T, C, V]) GetDefaultText() string
 func (f *FlagBase[T, C, V]) GetEnvVars() []string
     GetEnvVars returns the env vars for this flag
 
+func (f *FlagBase[T, C, V]) GetFlagValue() Value
+    GetValue returns the flags value as string representation and an empty
+    string if the flag takes no value at all.
+
 func (f *FlagBase[T, C, V]) GetUsage() string
     GetUsage returns the usage string for the flag
 
@@ -1068,6 +1072,10 @@ type ValueCreator[T any, C any] interface {
 
         T specifies the type
         C specifies the config for the type
+
+type ValueGetter interface {
+	GetFlagValue() Value
+}
 
 type ValueSource interface {
 	fmt.Stringer

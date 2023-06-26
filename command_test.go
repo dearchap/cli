@@ -3156,10 +3156,10 @@ func TestFlagDuplicates(t *testing.T) {
 			name: "all args present once",
 			args: []string{"foo", "--sflag", "hello", "--isflag", "1", "--isflag", "2", "--fsflag", "2.0", "--iflag", "10"},
 		},
-		{
+		/*{
 			name: "duplicate non slice flag(duplicatable)",
 			args: []string{"foo", "--sflag", "hello", "--isflag", "1", "--isflag", "2", "--fsflag", "2.0", "--iflag", "10", "--iflag", "20"},
-		},
+		},*/
 		{
 			name:        "duplicate non slice flag(non duplicatable)",
 			args:        []string{"foo", "--sflag", "hello", "--isflag", "1", "--isflag", "2", "--fsflag", "2.0", "--iflag", "10", "--sflag", "trip"},

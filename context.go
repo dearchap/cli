@@ -152,8 +152,10 @@ func (cCtx *Context) Count(name string) int {
 
 // Value returns the value of the flag corresponding to `name`
 func (cCtx *Context) Value(name string) interface{} {
-	if fs := cCtx.lookupFlagSet(name); fs != nil {
-		return fs.Lookup(name).Value.(flag.Getter).Get()
+	if f := cCtx.lookupFlag(name); f != nil {
+		if g, ok := f.(ValueGetter); ok {
+			return g.GetFlagValue().Get()
+		}
 	}
 	return nil
 }
