@@ -1991,6 +1991,7 @@ func Test_checkShellCompleteFlag(t *testing.T) {
 		cmd                 *Command
 		arguments           []string
 		wantShellCompletion bool
+		wantPastDoubleDash  bool
 		wantArgs            []string
 	}{
 		{
@@ -2019,12 +2020,11 @@ func Test_checkShellCompleteFlag(t *testing.T) {
 			wantArgs:            []string{"foo"},
 		},
 		{
-			name:      "arguments include double dash",
-			arguments: []string{"--", "foo", completionFlag},
-			cmd: &Command{
-				EnableShellCompletion: true,
-			},
-			wantShellCompletion: false,
+			name:                "arguments include double dash",
+			arguments:           []string{"--", "foo", completionFlag},
+			cmd:                 &Command{EnableShellCompletion: true},
+			wantShellCompletion: true,
+			wantPastDoubleDash:  true,
 			wantArgs:            []string{"--", "foo"},
 		},
 		{
@@ -2062,6 +2062,7 @@ func Test_checkShellCompleteFlag(t *testing.T) {
 			t.Parallel()
 			shellCompletion, args := checkShellCompleteFlag(tt.cmd, tt.arguments)
 			assert.Equal(t, tt.wantShellCompletion, shellCompletion)
+			assert.Equal(t, tt.wantPastDoubleDash, tt.cmd.shellCompletionPastDoubleDash)
 			assert.Equal(t, tt.wantArgs, args)
 		})
 	}
